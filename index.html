@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Demo</title>
+
+    <link rel="stylesheet" href="videogular/videogular.min.css">
+
+    <!-- Annotation plugin module src -->
+    <link rel="stylesheet" href="annotation-plugin/annotationPlugin.css">
+
+</head>
+
+<body>
+    <div class="wrapper" style="width: 600px; margin: 0 auto">
+
+        <div ng-controller="HomeCtrl as vm">
+            <h2 style="text-align: center">Video with annotation:</h2>
+            <div class="video-slicer-container">
+                <videogular>
+                    <vg-media vg-src="vm.url">
+                    </vg-media>
+                    <vg-controls>
+                        <vg-play-pause-button></vg-play-pause-button>
+                        <vg-time-display>{{ currentTime | date:'mm:ss' }}</vg-time-display>
+                        <vg-scrub-bar>
+                            <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+                        </vg-scrub-bar>
+                        <vg-time-display>{{ totalTime | date:'mm:ss' }}</vg-time-display>
+                        <vg-volume>
+                            <vg-mute-button></vg-mute-button>
+                            <vg-volume-bar></vg-volume-bar>
+                        </vg-volume>
+                        <vg-fullscreen-button></vg-fullscreen-button>
+                    </vg-controls>
+
+                    <!-- Inserted annotation plugin -->
+                    <annotation-plugin data-src="vm.annotationSrc"></annotation-plugin>
+
+                    <vg-overlay-play></vg-overlay-play>
+                </videogular>
+            </div>
+            <h2 style="text-align: center; margin-top: 100px">Annotation model:</h2>
+            <pre contenteditable="true">{{vm.annotationSrc | json}}</pre>
+        </div>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.6.2/angular-sanitize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-animate.min.js"></script>
+    <script src="videogular/videogular.bundle.min.js"></script>
+    
+    <!-- Annotation plugin module src -->
+    <script src="annotation-plugin/annotationPlugin.js"></script> 
+
+    <script>
+        angular.module('myApp', [
+            "ngSanitize",
+            "com.2fdevs.videogular",
+            "com.2fdevs.videogular.plugins.controls",
+            "com.2fdevs.videogular.plugins.overlayplay",
+            'ngAnimate', // use to enable basic annotation animation
+            'annotationPlugin' // annotation plugin module
+        ]);
+
+        angular.module('myApp').controller('HomeCtrl', [
+            function () {
+
+                var vm = this;
+
+                vm.url = 'http://www.html5videoplayer.net/videos/toystory.mp4';
+
+                vm.annotationSrc = [
+                    {
+                        startTime: 0,
+                        endTime: 4000,
+                        annotation: 'test1 dsg sdfg sdfg dsg dsfg sd gdsgf sdfg sdg dsg dsg dfsg dsg dsfg sd gsd gsdfg '
+                    },
+                    {
+                        startTime: 2000,
+                        endTime: 3000,
+                        annotation: 'test2'
+                    },
+                    {
+                        startTime: 6000,
+                        endTime: 10000,
+                        annotation: 'test3 text'
+                    },
+                    {
+                        startTime: 7000,
+                        endTime: 12000,
+                        annotation: 'test4 text: lalallalal lalal lal'
+                    }
+                ]
+            }
+        ]
+        );
+
+
+    </script>
+</body>
+
+</html>
